@@ -158,3 +158,4 @@ C:\Users\feliperibeiro\Documents\ASPNET\exercicio_api\obj\Debug\net8.0\refint\ex
 C:\Users\feliperibeiro\Documents\ASPNET\exercicio_api\obj\Debug\net8.0\exercicio_api.pdb
 C:\Users\feliperibeiro\Documents\ASPNET\exercicio_api\obj\Debug\net8.0\exercicio_api.genruntimeconfig.cache
 C:\Users\feliperibeiro\Documents\ASPNET\exercicio_api\obj\Debug\net8.0\ref\exercicio_api.dll
+C:\Users\feliperibeiro\Documents\ASPNET\exercicio_api\obj\Debug\net8.0\exercicio_api.sourcelink.json

@@ -37,6 +37,9 @@ namespace exercicio_api
             app.UseSwagger();
             app.UseSwaggerUI();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
