@@ -24,5 +24,12 @@ namespace exercicio_api.Database
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Maquina> Maquinas { get; set; }
         public DbSet<Software> Softwares { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Usuario>().ToTable("usuarios");
+            modelBuilder.Entity<Maquina>().ToTable("maquina");
+            modelBuilder.Entity<Software>().ToTable("software");
+        }
     }
 }

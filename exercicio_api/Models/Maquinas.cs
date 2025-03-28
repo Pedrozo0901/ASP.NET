@@ -28,7 +28,9 @@ namespace exercicio_api.Models
         [Column("memoria_ram")]
         public int MemoriaRam {get; set;}
 
+        [ForeignKey("Usuario")]
         [Column("fk_usuario")]
         public int FkUsuario {get; set;}
+        
     }
 }

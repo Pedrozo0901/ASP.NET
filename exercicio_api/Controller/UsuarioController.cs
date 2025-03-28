@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore; // Importa o namespace do Entity Framework
 // Agente vai utilizar a biblioteca MVC do ASP.NET
 using Microsoft.AspNetCore.Mvc; // O comando para instalar é: dotnet add package Microsoft.AspNetCore.Mvc
 
-namespace exercicio_api.Controller
+namespace exercicio_api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
