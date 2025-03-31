@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Máquinas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <nav class="paginas">
+            <ul>
+                <li><a href="http://localhost:5000/index.html">Usuarios</a></li>
+                <li><a href="http://localhost:5000/software.html">Softwares</a></li>
+            </ul>
+        </nav>
+        <h1>Cadastro de Máquinas</h1>
+
+        <form id="maquinaform">
+            <input type="hidden" id="id">
+            <input type="text" id="tipo" placeholder="Tipo da Máquina" required>
+            <input type="number" id="velocidade" placeholder="Velocidade" required>
+            <input type="number" id="harddisk" placeholder="HardDisk" required>
+            <input type="number" id="placarede" placeholder="Placa de Rede" required>
+            <input type="number" id="memoriaram" placeholder="Memória RAM" required>
+            <input type="number" id="fk_usuario" placeholder="ID do Usuário" required>
+            <button type="submit">Salvar</button>
+        </form>
+
+        <h2>Lista de Máquinas</h2>
+        <table id="tabelaMaquinas">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Velocidade</th>
+                    <th>HardDisk</th>
+                    <th>Placa de Rede</th>
+                    <th>Memória RAM</th>
+                    <th>Usuário ID</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script src="maquina.js"></script>
+</body>
+
+</html>

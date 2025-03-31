@@ -30,6 +30,14 @@ namespace exercicio_api.Controller
             return await _context.Softwares.ToListAsync();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Software>> Get(int id)
+        {
+            var software = await _context.Softwares.FindAsync(id);
+            if (software == null) return NotFound();
+            return software;
+        }
+
         [HttpPost]
         public async Task<ActionResult<Software>> Post([FromBody] Software software)
         {

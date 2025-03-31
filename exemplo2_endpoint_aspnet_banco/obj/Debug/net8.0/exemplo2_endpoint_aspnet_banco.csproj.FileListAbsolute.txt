@@ -144,3 +144,4 @@ C:\Users\feliperibeiro\Documents\ASPNET\exemplo2_endpoint_aspnet_banco\obj\Debug
 C:\Users\feliperibeiro\Documents\ASPNET\exemplo2_endpoint_aspnet_banco\obj\Debug\net8.0\exemplo2_endpoint_aspnet_banco.pdb
 C:\Users\feliperibeiro\Documents\ASPNET\exemplo2_endpoint_aspnet_banco\obj\Debug\net8.0\exemplo2_endpoint_aspnet_banco.genruntimeconfig.cache
 C:\Users\feliperibeiro\Documents\ASPNET\exemplo2_endpoint_aspnet_banco\obj\Debug\net8.0\ref\exemplo2_endpoint_aspnet_banco.dll
+C:\Users\feliperibeiro\Documents\ASPNET\exemplo2_endpoint_aspnet_banco\obj\Debug\net8.0\exemplo2_endpoint_aspnet_banco.sourcelink.json

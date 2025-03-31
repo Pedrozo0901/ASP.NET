@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace exemplo2_endpoint_aspnet_banco.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UsuarioController : ControllerBase
     {
         private readonly AppDbContext _context;

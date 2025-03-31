@@ -20,7 +20,7 @@ function carregarUsuarios() {
                     <tr>
                         <td>${usuario.nome}</td>
                         <td>${usuario.ramal}</td>
-                        <td>${usuario.senha}</td>
+                        <td>${usuario.password}</td>
                         <td>${usuario.especialidade}</td>
                         <td>
                             <button class="edit" onclick="editarUsuario(${usuario.id})">editar</button>
