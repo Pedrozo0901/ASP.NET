@@ -1,0 +1,32 @@
+@WebApplication2_HostAddress = http://localhost:5007
+
+GET {{WebApplication2_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+# Testar Get
+Get http://localhost:5007/Usuario
+Accept: application/json
+
+
+###
+# Testar Post
+POST  http://localhost:5007/Usuario
+Content-Type: : application/json
+
+{
+    "Nome": "Lucas",
+    "Email": "Lucas@gmail.com"
+}
+
+###
+PUT  http://localhost:5007/Usuario
+Content-Type: : application/json
+
+{
+    "Nome": "Lucas Silva",
+    "Email": "lucassilva@gmail.com"
+}
+
+###
+DELETE http://localhost:5007/Usuario/1

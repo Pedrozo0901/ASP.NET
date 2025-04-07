@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("exemplo2_endpoint_aspnet_banco")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5191f14ec8a7c17aafb0c3da978862d75119fb8f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aacf0011c76fd088ce9df128c67a65358b36d057")]
 [assembly: System.Reflection.AssemblyProductAttribute("exemplo2_endpoint_aspnet_banco")]
 [assembly: System.Reflection.AssemblyTitleAttribute("exemplo2_endpoint_aspnet_banco")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
