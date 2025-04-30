@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SistemaEscolarApi.Models;
 
+
 namespace SistemaEscolarApi.DB
 {
     public class AppDbContext : DbContext
@@ -18,11 +19,11 @@ namespace SistemaEscolarApi.DB
         {
         }
 
-        protected override void OnModelCreating(ModelBuider modelBuider)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<DisciplinasAlunosCursos>()
-                .HasKey(dac => new { dac.AlunoId, dac.DisciplinaId, dac.CursoId });
-                // HasKey é usado para definir a chave primária composta da tabela de junção
+            modelBuilder.Entity<DisciplinaAlunoCurso>()
+                .HasKey(dc => new { dc.AlunoId, dc.DisciplinaId, dc.CursoId });
+                // HasKey é usado para definir a chave primprotected override void OnModelCreating(ModelBuilder modelBuilder)
         }
      }
 }
