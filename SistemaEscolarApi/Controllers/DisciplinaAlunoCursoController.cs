@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaEscolarApi.Models;
 using SistemaEscolarApi.DTO;
-using Microsoft.AspNetCore.Mvc;
 using SistemaEscolarApi.DB;
 
 namespace SistemaEscolarApi.Controllers
@@ -24,10 +23,7 @@ namespace SistemaEscolarApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DisciplinaAlunoCursoDTO>>> Get()
         {
-            var disciplinas = await _context.DisciplinasAlunosCursos
-                .Include(d => d.DisciplinaId)
-                .Include(d => d.AlunoId)
-                .Include(d => d.CursoId)
+            var registros = await _context.DisciplinasAlunosCursos
                 .Select(d => new DisciplinaAlunoCursoDTO
                 {
                     AlunoId = d.AlunoId,
@@ -35,49 +31,55 @@ namespace SistemaEscolarApi.Controllers
                     DisciplinaId = d.DisciplinaId
                 })
                 .ToListAsync();
-            return Ok(disciplinas);
+
+            return Ok(registros);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] DisciplinaAlunoCursoDTO disciplinaAlunoCursoDTO)
+        public async Task<ActionResult> Post([FromBody] DisciplinaAlunoCursoDTO dto)
         {
-            var disciplinaAlunoCurso = new DisciplinaAlunoCurso
+            var entidade = new DisciplinaAlunoCurso
             {
-                AlunoId = disciplinaAlunoCursoDTO.AlunoId,
-                CursoId = disciplinaAlunoCursoDTO.CursoId,
-                DisciplinaId = disciplinaAlunoCursoDTO.DisciplinaId
+                AlunoId = dto.AlunoId,
+                CursoId = dto.CursoId,
+                DisciplinaId = dto.DisciplinaId
             };
-            _context.DisciplinasAlunosCursos.Add(disciplinaAlunoCurso);
+
+            _context.DisciplinasAlunosCursos.Add(entidade);
             await _context.SaveChangesAsync();
 
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] DisciplinaAlunoCursoDTO disciplinaAlunoCursoDTO)
+        public async Task<ActionResult> Put(int id, [FromBody] DisciplinaAlunoCursoDTO dto)
         {
-            var disciplinaAlunoCurso = await _context.DisciplinasAlunosCursos.FindAsync(id);
+            var entidade = await _context.DisciplinasAlunosCursos.FindAsync(id);
+            if (entidade == null)
+            {
+                return NotFound();
+            }
 
-            if (disciplinaAlunoCurso == null) return NotFound("Disciplina não encontrada.");
+            entidade.AlunoId = dto.AlunoId;
+            entidade.CursoId = dto.CursoId;
+            entidade.DisciplinaId = dto.DisciplinaId;
 
-            disciplinaAlunoCurso.AlunoId = disciplinaAlunoCursoDTO.AlunoId;
-            disciplinaAlunoCurso.CursoId = disciplinaAlunoCursoDTO.CursoId;
-            disciplinaAlunoCurso.DisciplinaId = disciplinaAlunoCursoDTO.DisciplinaId;
-
-            _context.DisciplinasAlunosCursos.Update(disciplinaAlunoCurso);
+            _context.DisciplinasAlunosCursos.Update(entidade);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var disciplinaAlunoCurso = await _context.DisciplinasAlunosCursos.FindAsync(id);
+            var entidade = await _context.DisciplinasAlunosCursos.FindAsync(id);
+            if (entidade == null)
+            {
+                return NotFound();
+            }
 
-            if (disciplinaAlunoCurso == null) return NotFound("Disciplina não encontrada.");
-
-            _context.DisciplinasAlunosCursos.Remove(disciplinaAlunoCurso);
+            _context.DisciplinasAlunosCursos.Remove(entidade);
             await _context.SaveChangesAsync();
 
             return NoContent();

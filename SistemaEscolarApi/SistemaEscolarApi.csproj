@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
@@ -47,4 +48,10 @@ dotnet list package
 
 Para desinstalar um pacote:
 dotnet remove package <nome_do_pacote>
+ -->
+
+
+ <!-- migraçoes 
+  dotnet ef migrations add InitialCreate
+  dotnet ef database update
  -->
