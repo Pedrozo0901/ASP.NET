@@ -25,8 +25,9 @@ namespace SistemaEscolarApi.Controllers
         public async Task<ActionResult<IEnumerable<CursoDTO>>> Get()
         {
             var cursos = await _context.Cursos
-                .Include(c => c.Descricao)
-                .Select(cursos => new CursoDTO {Descricao = cursos.Descricao})
+                .Select(cursos => new CursoDTO {
+                    Id = cursos.Id,
+                    Descricao = cursos.Descricao})
                 .ToListAsync();
             return Ok(cursos);
         }
@@ -38,7 +39,7 @@ namespace SistemaEscolarApi.Controllers
             _context.Cursos.Add(curso);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(new {mensagem = "Curso cadastrado com sucesso!", curso = curso}); // Retorna um status 200 OK e a mensagem de sucesso
         }
 
         [HttpPut("id")]
@@ -53,7 +54,7 @@ namespace SistemaEscolarApi.Controllers
             _context.Cursos.Update(curso);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(new {mensagem = "Curso atualizado com sucesso!", curso = curso}); // Retorna um status 200 OK e a mensagem de sucesso
         }
 
         [HttpDelete("{id}")]
@@ -67,6 +68,22 @@ namespace SistemaEscolarApi.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CursoDTO>> Get(int id)
+        {
+            var curso = await _context.Cursos.FindAsync(id);
+
+            if (curso == null) return NotFound("Curso não encontrado.");
+
+            var cursoDTO = new CursoDTO
+            {
+                Id = curso.Id,
+                Descricao = curso.Descricao
+            };
+
+            return Ok(cursoDTO);
         }
     }
 }

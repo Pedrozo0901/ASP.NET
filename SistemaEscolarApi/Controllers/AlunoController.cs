@@ -26,7 +26,10 @@ namespace SistemaEscolarApi.Controllers
         {
             var alunos = await _context.Alunos
                 .Include(a => a.Curso)
-                .Select(alunos => new AlunoDTO {Nome = alunos.Nome, Curso = alunos.Curso.Descricao})
+                .Select(a => new AlunoDTO {
+                    Id = a.Id,
+                    Nome = a.Nome, 
+                    Curso = a.Curso.Descricao})
                 .ToListAsync();
             return Ok(alunos);
         }
@@ -41,7 +44,7 @@ namespace SistemaEscolarApi.Controllers
             _context.Alunos.Add(aluno);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(new {mensagem = "Aluno cadastrado com sucesso!", aluno = aluno}); // Retorna um status 200 OK e a mensagem de sucesso
         }
 
         [HttpPut("{id}")]
@@ -60,7 +63,7 @@ namespace SistemaEscolarApi.Controllers
             _context.Alunos.Update(aluno); // Atualiza o aluno no contexto
             await _context.SaveChangesAsync(); // Salva as alterações no banco de dados 
 
-            return Ok(); // Retorna um status 200 OK
+            return Ok(new {mensagem = "Aluno alterado com sucesso!"}); // Retorna um status 200 OK
         }
 
         [HttpDelete("{id}")]
@@ -74,7 +77,26 @@ namespace SistemaEscolarApi.Controllers
 
             await _context.SaveChangesAsync(); // Salva as alterações no banco de dados
 
-            return Ok();
+            return Ok(new {mensagem = "Aluno removido com sucesso!"}); // Retorna um status 200 OK e a mensagem de sucesso
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AlunoDTO>> Get(int id)
+        {
+            var aluno = await _context.Alunos
+                .Include(a => a.Curso)
+                .FirstOrDefaultAsync(a => a.Id == id); // Procura o aluno pelo id
+
+            if (aluno == null) return NotFound("Aluno não encontrado."); // Se não encontrar, retorna um erro 404
+
+            var alunoDTO = new AlunoDTO
+            {
+                Id = aluno.Id,
+                Nome = aluno.Nome,
+                Curso = aluno.Curso.Descricao // Cria um objeto AlunoDTO com os dados do aluno
+            };
+
+            return Ok(alunoDTO); // Retorna o alunoDTO
         }
     }
 }

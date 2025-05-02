@@ -24,11 +24,19 @@ namespace SistemaEscolarApi.Controllers
         public async Task<ActionResult<IEnumerable<DisciplinaAlunoCursoDTO>>> Get()
         {
             var registros = await _context.DisciplinasAlunosCursos
+                .Include(d => d.Aluno)
+                .Include(d => d.Curso)
+                .Include(d => d.Disciplina)
+                
                 .Select(d => new DisciplinaAlunoCursoDTO
                 {
+                    Id= d.AlunoId + d.CursoId + d.DisciplinaId,
                     AlunoId = d.AlunoId,
+                    AlunoNome = d.Aluno.Nome,
                     CursoId = d.CursoId,
-                    DisciplinaId = d.DisciplinaId
+                    CursoDescricao = d.Curso.Descricao,
+                    DisciplinaId = d.DisciplinaId,
+                    DisciplinaDescricao = d.Disciplina.Descricao,
                 })
                 .ToListAsync();
 
@@ -83,6 +91,33 @@ namespace SistemaEscolarApi.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<DisciplinaAlunoCursoDTO>> GetById(int id)
+        {
+            var relacoes = await _context.DisciplinasAlunosCursos
+                .Include(d => d.Aluno)
+                .Include(d => d.Curso)
+                .Include(d => d.Disciplina)
+                .ToListAsync();
+
+            var relacao = relacoes.FirstOrDefault(r => r.AlunoId + r.CursoId + r.DisciplinaId == id);
+            if(relacao == null) return NotFound("Relação não encontrada.");
+
+            var dto = new DisciplinaAlunoCursoDTO
+            {
+                Id = relacao.AlunoId + relacao.CursoId + relacao.DisciplinaId,
+                AlunoId = relacao.AlunoId,
+                AlunoNome = relacao.Aluno.Nome,
+                CursoId = relacao.CursoId,
+                CursoDescricao = relacao.Curso.Descricao,
+                DisciplinaId = relacao.DisciplinaId,
+                DisciplinaDescricao = relacao.Disciplina.Descricao
+            };
+
+            return Ok(dto);
+
         }
     }
 }
