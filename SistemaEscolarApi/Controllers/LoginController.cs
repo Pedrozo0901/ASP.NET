@@ -15,6 +15,7 @@ namespace SistemaEscolarApi.Controllers
     [Route("api/[controller]")]
     public class LoginController : ControllerBase
     {
+        [HttpPost]
         public IActionResult Login([FromBody] LoginDTO loginDto)
         {
             if (string.IsNullOrWhiteSpace(loginDto.Username) || string.IsNullOrWhiteSpace(loginDto.Password))
@@ -36,10 +37,8 @@ namespace SistemaEscolarApi.Controllers
             }
 
             var token = TokenService.GenerateToken(user);
-            return Ok(new {token})
+            return Ok(new {token});
 
-        };
-        
-                 
+        }               
     }
 }
