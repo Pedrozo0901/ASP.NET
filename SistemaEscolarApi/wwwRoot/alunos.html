@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Educacional</title>
+    <link rel="stylesheet" href="./css/styles-global.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* é parte que fica em cima da pagina com a imagem de fundo e o texto  */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                url('https://th.bing.com/th/id/OIP.MNlRBpo-SjTWpiAiv3ZPgwHaE8?cb=iwc1&rs=1&pid=ImgDetMain');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            margin-bottom: 50px;
+            color: white;
+            text-align: center;
+        }
+
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- fas é estilo solido; fa-graduation é icone estilo capelo; me-2 é magem direita -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <!-- tag a é para ligar hiper ligacações -->
+            <a class="navbar-brand" href="#">
+                <!-- tag i ara deixar o string em italico -->
+                <i class="fas fa-graduation-cap me-2">Escola Pedrozo LTDA</i>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-taggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">
+                            <i class="fas fa-home me-1">Home</i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="login.html" class="nav-link">
+                            <i class="fas fa-sign-in-alt me-2">login</i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- colocar header para já entrar no titulo e listar as funcionalidas -->
+    <header class="hero-section">
+        <div class="container">
+            <!-- display-4 uma classe do bootstrap para deixar o texto maior e mais detectado -->
+            <!-- fwobold é outra classe bt. que deixa o texto mais grosso -->
+            <h1 class="display-4 fw-bold">Bem vindo ao Cursos Pedrozo</h1>
+            <p class="lead"> Sistemas de gestão Educacional</p>
+        </div>
+    </header>
+<body>
+  <div class="container mt-5">
+    <h2 class="mb-4">Gestão de Alunos</h2>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#alunoModal" onclick="abrirModal()">Novo Aluno</button>
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Curso</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaAlunos">
+        <!-- Dados dos alunos serão inseridos aqui -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para Adicionar/Editar Aluno -->
+  <div class="modal fade" id="alunoModal" tabindex="-1" aria-labelledby="alunoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form id="formAluno" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="alunoModalLabel">Adicionar Aluno</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="alunoId">
+          <div class="mb-3">
+            <label for="nomeAluno" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="nomeAluno" required>
+          </div>
+          <div class="mb-3">
+            <label for="cursoAluno" class="form-label">Curso</label>
+            <input type="text" class="form-control" id="cursoAluno" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Salvar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const tabelaAlunos = document.getElementById('tabelaAlunos');
+    const formAluno = document.getElementById('formAluno');
+    const alunoModal = new bootstrap.Modal(document.getElementById('alunoModal'));
+    const alunoIdInput = document.getElementById('alunoId');
+    const nomeAlunoInput = document.getElementById('nomeAluno');
+    const cursoAlunoInput = document.getElementById('cursoAluno');
+
+    // Função para carregar os alunos
+    async function carregarAlunos() {
+      try {
+        const resposta = await fetch('/api/aluno');
+        const alunos = await resposta.json();
+        tabelaAlunos.innerHTML = '';
+        alunos.forEach(aluno => {
+          const linha = document.createElement('tr');
+          linha.innerHTML = `
+            <td>${aluno.id}</td>
+            <td>${aluno.nome}</td>
+            <td>${aluno.curso}</td>
+            <td>
+              <button class="btn btn-sm btn-warning me-2" onclick="editarAluno(${aluno.id})">Editar</button>
+              <button class="btn btn-sm btn-danger" onclick="excluirAluno(${aluno.id})">Excluir</button>
+            </td>
+          `;
+          tabelaAlunos.appendChild(linha);
+        });
+      } catch (erro) {
+        console.error('Erro ao carregar alunos:', erro);
+      }
+    }
+
+    // Função para abrir o modal para adicionar novo aluno
+    function abrirModal() {
+      alunoIdInput.value = '';
+      nomeAlunoInput.value = '';
+      cursoAlunoInput.value = '';
+      document.getElementById('alunoModalLabel').textContent = 'Adicionar Aluno';
+    }
+
+    // Função para editar um aluno
+    async function editarAluno(id) {
+      try {
+        const resposta = await fetch(`/api/aluno/${id}`);
+        const aluno = await resposta.json();
+        alunoIdInput.value = aluno.id;
+        nomeAlunoInput.value = aluno.nome;
+        cursoAlunoInput.value = aluno.curso;
+        document.getElementById('alunoModalLabel').textContent = 'Editar Aluno';
+        alunoModal.show();
+      } catch (erro) {
+        console.error('Erro ao buscar aluno:', erro);
+      }
+    }
+
+    // Função para excluir um aluno
+    async function excluirAluno(id) {
+      if (confirm('Deseja realmente excluir este aluno?')) {
+        try {
+          await fetch(`/api/aluno/${id}`, { method: 'DELETE' });
+          carregarAlunos();
+        } catch (erro) {
+          console.error('Erro ao excluir aluno:', erro);
+        }
+      }
+    }
+
+    // Evento de envio do formulário
+    formAluno.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      const id = alunoIdInput.value;
+      const nome = nomeAlunoInput.value.trim();
+      const curso = cursoAlunoInput.value.trim();
+
+      if (!nome || !curso) {
+        alert('Preencha todos os campos.');
+        return;
+      }
+
+      const aluno = { nome, curso };
+
+      try {
+        if (id) {
+          // Atualizar aluno existente
+          await fetch(`/api/aluno/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(aluno)
+          });
+        } else {
+          // Adicionar novo aluno
+          await fetch('/api/aluno', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(aluno)
+          });
+        }
+        alunoModal.hide();
+        carregarAlunos();
+      } catch (erro) {
+        console.error('Erro ao salvar aluno:', erro);
+      }
+    });
+
+    // Carregar alunos ao carregar a página
+    document.addEventListener('DOMContentLoaded', carregarAlunos);
+  </script>
+</body>
+</html>

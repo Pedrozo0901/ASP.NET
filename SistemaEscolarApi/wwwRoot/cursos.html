@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Curso</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="./css/styles-global.css" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .form-section {
+      margin-top: 40px;
+    }
+
+    .form-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .cursos-list {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-top: 40px;
+    }
+
+    .curso-item {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+    }
+
+    .curso-item:last-child {
+      border-bottom: none;
+    }
+
+    .actions button {
+      margin-right: 10px;
+    }
+
+    .status {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="#"><i class="fas fa-graduation-cap me-2">Escola Oliveira LTDA</i></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html"><i class="fas fa-home me-1"> Home</i></a>
+          </li>
+          <li class="nav-item">
+            <a href="login.html" class="nav-link"><i class="fas fa-sign-in-alt me-2"> Login</i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Conteúdo -->
+  <div class="container form-section">
+    <div class="form-container">
+      <h2 class="text-center mb-4">Cadastro de Curso</h2>
+      <form id="curso-form">
+        <div class="mb-3">
+          <label for="descricao" class="form-label">Descrição do Curso:</label>
+          <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Ex: Análise e Desenvolvimento de Sistemas" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">
+          <i class="fas fa-save me-2"></i>Salvar Curso
+        </button>
+        <div class="status text-success mt-3" id="status-msg"></div>
+      </form>
+    </div>
+
+    <div class="cursos-list mt-5">
+      <h2 class="text-center mb-4">Cursos Cadastrados</h2>
+      <div id="lista-cursos"></div>
+    </div>
+  </div>
+
+  <!-- Rodapé -->
+  <footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+      <p>2025 © Sistema Educacional Oliveira - Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    const apiUrl = "/api/Curso"; // 
+
+let editandoId = null;
+
+const form = document.getElementById('curso-form');
+const descricaoInput = document.getElementById('descricao');
+const statusMsg = document.getElementById('status-msg');
+const listaCursos = document.getElementById('lista-cursos');
+
+function carregarCursos() {
+  fetch(apiUrl)
+    .then(res => res.json())
+    .then(cursos => {
+      listaCursos.innerHTML = '';
+      cursos.forEach(curso => {
+        const div = document.createElement('div');
+        div.className = 'curso-item d-flex justify-content-between align-items-center';
+        div.innerHTML = `
+          <span><strong>Descrição:</strong> ${curso.descricao}</span>
+          <div class="actions">
+            <button class="btn btn-sm btn-warning" onclick="editarCurso(${curso.id})">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="excluirCurso(${curso.id})">
+              <i class="fas fa-trash-alt"></i> Excluir
+            </button>
+          </div>
+        `;
+        listaCursos.appendChild(div);
+      });
+    });
+}
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const curso = {
+    descricao: descricaoInput.value
+  };
+
+  const metodo = editandoId ? 'PUT' : 'POST';
+  const url = editandoId ? `${apiUrl}/${editandoId}` : apiUrl;
+
+  fetch(url, {
+    method: metodo,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(curso)
+  })
+  .then(async res => {
+    if (!res.ok) throw new Error('Erro ao salvar');
+    const text = await res.text();
+    return text ? JSON.parse(text) : {};
+  })
+  
+  .then(() => {
+    statusMsg.textContent = editandoId ? 'Curso atualizado com sucesso!' : 'Curso cadastrado com sucesso!';
+    statusMsg.style.color = 'green';
+    form.reset();
+    editandoId = null;
+    carregarCursos();
+  })
+  .catch(() => {
+    statusMsg.textContent = 'Erro ao salvar curso.';
+    statusMsg.style.color = 'red';
+  });
+});
+
+function editarCurso(id) {
+  fetch(`${apiUrl}/${id}`)
+    .then(res => res.json())
+    .then(curso => {
+      descricaoInput.value = curso.descricao;
+      editandoId = curso.id;
+      statusMsg.textContent = 'Editando curso...';
+      statusMsg.style.color = 'blue';
+    });
+}
+
+function excluirCurso(id) {
+  if (!confirm('Deseja realmente excluir este curso?')) return;
+
+  fetch(`${apiUrl}/${id}`, { method: 'DELETE' })
+    .then(res => {
+      if (!res.ok) throw new Error('Erro ao excluir');
+      carregarCursos();
+    })
+    .catch(() => {
+      alert('Erro ao excluir curso.');
+    });
+}
+
+carregarCursos();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
